@@ -79,7 +79,7 @@ GET         /api/v1? </small>
    - show </br>
    This attribute provides the field you want to be shown as a result
    
-   ```e.g  ?show=spend,revenue```
+   ```e.g  ?show=revenue,date```
    
    - ticket price
 
