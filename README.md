@@ -1,7 +1,7 @@
 
 <h1>Introduction</h1> 
 
-DRF-events provides couple of filtering, grouping and sorting actions on Dataset database.
+DRF-events provides couple of filtering, grouping and sorting actions on Event database.
 
 ## Installation
 
