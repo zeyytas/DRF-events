@@ -70,29 +70,51 @@ class DatasetViewSet(viewsets.ModelViewSet):
             else:
                 return " ORDER BY {} ".format(sort_by[0])
 
-    def create_sql(self, request):
-        where_condition = []
+    @staticmethod
+    def __add_where_clause(request):
+        where_clause = []
 
-        sql = self.__create_select_clause(request.GET.get('show'), request.GET.get('group_by'))
-
-        '''Creating where clause'''
         if request.GET.get('date_to'):
-            where_condition.append("date <= '{}' ".format(request.GET.get('date_to')))
+            where_clause.append("date <= '{}' ".format(request.GET.get('date_to')))
 
         if request.GET.get('date_from'):
-            where_condition.append("date >= '{}' ".format(request.GET.get('date_from')))
+            where_clause.append("date >= '{}' ".format(request.GET.get('date_from')))
 
         if request.GET.get('name'):
-            where_condition.append(" OR ".join(
+            where_clause.append(" OR ".join(
                 map(lambda x: "name = '{}'".format(x), request.GET.get('name').split(','))))
 
         if request.GET.get('country'):
-            where_condition.append(" OR ".join(
+            where_clause.append(" OR ".join(
                 map(lambda x: "country = '{}'".format(x), request.GET.get('country').split(','))))
 
-        if where_condition:
+        if request.GET.get('country'):
+            where_clause.append(" OR ".join(
+                map(lambda x: "country = '{}'".format(x), request.GET.get('country').split(','))))
+
+        if request.GET.get('revenue'):
+            where_clause.append("revenue = {} ".format(request.GET.get('session_count')))
+
+        if request.GET.get('checkin_count'):
+            where_clause.append("checkin_count = {} ".format(request.GET.get('checkin_count')))
+
+        if request.GET.get('ticket_count'):
+            where_clause.append("ticket_count = {} ".format(request.GET.get('ticket_count')))
+
+        if request.GET.get('session_count'):
+            where_clause.append("session_count = {} ".format(request.GET.get('session_count')))
+
+        return where_clause
+
+    def create_sql(self, request):
+
+        sql = self.__create_select_clause(request.GET.get('show'), request.GET.get('group_by'))
+
+        where_clause = self.__add_where_clause(request)
+
+        if where_clause:
             sql += ' WHERE '
-            sql += ' AND '.join(where_condition)
+            sql += ' AND '.join(where_clause)
         sql += self.__add_group_by(request.GET.get('group_by')) or ''
         sql += self.__add_sort_by(request.GET.get('sort_by')) or ''
 
