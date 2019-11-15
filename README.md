@@ -83,7 +83,7 @@ GET         /api/v1? </small>
    
    - ticket price
 
-   ```e.g.   ?show=tk```
+   ```e.g.   ?show=tp```
 
    - group_by </br>
    This attribute provides broken down attribute with which field
